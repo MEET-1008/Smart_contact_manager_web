@@ -5,12 +5,15 @@ import com.codewithMeet.scm.scm0_2.Service.UserService;
 import com.codewithMeet.scm.scm0_2.entities.User;
 import com.codewithMeet.scm.scm0_2.exception.ResouecenotfoundException;
 import com.codewithMeet.scm.scm0_2.helper.AppConstants;
+import com.codewithMeet.scm.scm0_2.helper.Helper;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class userServiceImpl implements UserService {
@@ -19,12 +22,22 @@ public class userServiceImpl implements UserService {
     PasswordEncoder passwordEncoder;
 
     @Autowired
-   private UserRepo userRepo;
+    emailServiceImpl emailService;
+
+    @Autowired
+    private UserRepo userRepo;
 
     @Override
-    public void saveUsers(User user) {
+    public void saveUsers(User user) throws MessagingException {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoleList(List.of(AppConstants.ROLE_USER));
+
+        String emailtokan = UUID.randomUUID().toString();
+        String html = "";
+        String link = Helper.getLinkForEmailVerificatiton(emailtokan);
+        emailService.SendEmailWithHtml(user.getEmail(), "varifi link ", link);
+        user.setEmailToken(emailtokan);
+
         userRepo.save(user);
     }
 
@@ -37,7 +50,7 @@ public class userServiceImpl implements UserService {
     public User getUserByEmail(String email) {
 //       return userRepo.findByEmail(email).orElseThrow(() -> new ResouecenotfoundException("email id ","id",email));
 
-    return  userRepo.findByEmail(email).orElse(null);
+        return userRepo.findByEmail(email).orElse(null);
     }
 
     @Override
@@ -48,7 +61,7 @@ public class userServiceImpl implements UserService {
     @Override
     public User upateUser(User user) {
 
-        User user2 = userRepo.findById(user.getUserid()).orElseThrow(() -> new ResouecenotfoundException("user","userid", user.getUserid()));
+        User user2 = userRepo.findById(user.getUserid()).orElseThrow(() -> new ResouecenotfoundException("user", "userid", user.getUserid()));
         user2.setUsername(user.getUsername());
         user2.setPassword(user.getPassword());
         user2.setEmail(user.getEmail());
@@ -65,8 +78,7 @@ public class userServiceImpl implements UserService {
 
     @Override
     public void deleteUser(int id) {
-        User user2 = userRepo.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
-        userRepo.delete(user2);
+        userRepo.deleteById(id);
 
     }
 
@@ -78,7 +90,7 @@ public class userServiceImpl implements UserService {
 
     @Override
     public boolean isUserExists(int id) {
-      User user2 =  userRepo.findById(id).orElse(null);
+        User user2 = userRepo.findById(id).orElse(null);
         return user2 != null;
     }
 

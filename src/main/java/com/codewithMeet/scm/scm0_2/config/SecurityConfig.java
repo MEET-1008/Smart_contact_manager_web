@@ -22,6 +22,8 @@ public class SecurityConfig {
     private OAuthAuthenicationSuccessHandler handler;
 
 
+    @Autowired
+    AuthFailtureHandler authFailureHandler;
  /*
 
 
@@ -67,6 +69,7 @@ public class SecurityConfig {
 //        url configure  url is private or not
         http.authorizeHttpRequests(authorize -> {
 //          authorize.requestMatchers("/home" , "/signup" ,"/login").permitAll();
+            authorize.requestMatchers("user/delet/**").permitAll();
             authorize.requestMatchers("user/**").authenticated();
             authorize.requestMatchers("admin/**").authenticated();
             authorize.anyRequest().permitAll();
@@ -81,6 +84,7 @@ public class SecurityConfig {
 //          formLogin.failureForwardUrl("/login?error=true");
             formLogin.usernameParameter("email");
             formLogin.passwordParameter("password");
+            formLogin.failureHandler(authFailureHandler);
 
         });
 

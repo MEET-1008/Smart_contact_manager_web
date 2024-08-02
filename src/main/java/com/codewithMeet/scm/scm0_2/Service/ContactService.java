@@ -19,22 +19,18 @@ public interface ContactService {
 
     void deleteContact(int id);
 
-    Contact updateContact(Contact contact );
+    Contact updateContact(Contact contact);
 
     List<Contact> getContactsByUserId(int UserId);
 
-    Page<Contact> getContactsByUser(User user , int Page , int PageSize , String SortBy , String Direction );
+    Page<Contact> getContactsByUser(User user, int Page, int PageSize, String SortBy, String Direction);
 
 
-
-
-    Page<Contact> searchKeyword (
+    Page<Contact> searchKeyword(
             String key,
             int size,
             int page,
             String sortBy,
             String order,
             User user);
-
-
-}
+    }

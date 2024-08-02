@@ -2,20 +2,23 @@ package com.codewithMeet.scm.scm0_2.controller;
 
 import com.codewithMeet.scm.scm0_2.Service.UserService;
 import com.codewithMeet.scm.scm0_2.entities.User;
+import com.codewithMeet.scm.scm0_2.forms.ContactForm;
 import com.codewithMeet.scm.scm0_2.forms.UserForms;
 import com.codewithMeet.scm.scm0_2.helper.MessageHelper;
 import com.codewithMeet.scm.scm0_2.helper.MessageType;
 import com.codewithMeet.scm.scm0_2.Repo.UserRepo;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Random;
 
 @Controller
 public class PageController {
@@ -25,6 +28,13 @@ public class PageController {
 
     @Autowired
     UserRepo userRepo;
+
+    @GetMapping("/delet/{id}")
+    public String deleteUser(@PathVariable int id) {
+        userService.deleteUser(id);
+        System.out.println("user id is de le= "+id);
+        return "home";
+    }
 
 
     @RequestMapping("/home")
@@ -66,7 +76,13 @@ public class PageController {
     }
 
     @GetMapping("/login")
-    public String login() {
+
+
+    public String login(Authentication authentication) {
+        if (authentication != null) {
+            return "redirect:user/profile";
+        }
+
         return "login";
     }
 
@@ -86,34 +102,31 @@ public class PageController {
         return "signup";
     }
 
-    @RequestMapping(value = "/do-register", method = RequestMethod.POST)
-    public String registerProcess(@Valid @ModelAttribute UserForms userForms, HttpSession session, BindingResult result) {
+    @PostMapping( "/do-register")
+    public String registerProcess(@Valid @Validated UserForms userForms, BindingResult result , HttpSession session) throws MessagingException {
 
         //fetch the data for outperform
-//        System.out.println("userForms is " + userForms);
+        System.out.println( "print the contact form :- "+userForms);
 
-        // validate data
-//        if (result.hasErrors()){
-//            return "signup";
-//        }
-
-        System.out.println(userForms);
-
-//        fetch the data for userForm and save data in database
         if (result.hasErrors()) {
-            session.setAttribute("message", MessageHelper.builder().content("user already signup...! ").type(MessageType.red).build());
-
+            session.setAttribute("message", MessageHelper.builder().content("Please correct the following errors").type(MessageType.red).build());
             return "redirect:/signup";
         }
 
+//        fetch the data for userForm and save data in database
         User user2 = userRepo.findByEmail(userForms.getEmail()).orElse(null);
 
         if (user2 == null) {
             userService.saveUsers(getUser(userForms));
+
             System.out.println("user saved email id is :" + userForms.getEmail());
-            session.setAttribute("message", MessageHelper.builder().content("your contact added successfully").type(MessageType.green).build());
+            session.setAttribute("message", MessageHelper.builder().content("user save successfully").type(MessageType.green).build());
 
 
+        }
+        else
+        {
+            session.setAttribute("message", MessageHelper.builder().content("user already signup...! ").type(MessageType.red).build());
         }
 
 
@@ -132,4 +145,7 @@ public class PageController {
         user1.setProfilepic("https://www.google.com/url?sa=i&url=https%3A%2F%2Fen.m.wikipedia.org%2Fwiki%2FFile%3ADefault_pfp.svg&psig=AOvVaw28VcDklYcHi_KPECHdyFhq&ust=1717472793921000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCNCPtfHCvoYDFQAAAAAdAAAAABAE");
         return user1;
     }
+
+
+
 }

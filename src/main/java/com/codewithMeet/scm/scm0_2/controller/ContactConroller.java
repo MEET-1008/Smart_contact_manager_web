@@ -38,6 +38,7 @@ public class ContactConroller {
 
     @Autowired
     ImgService imgService;
+
     @Autowired
     private ContactRepo contactRepo;
 
@@ -62,14 +63,12 @@ public class ContactConroller {
 //            result.getAllErrors().forEach(error -> System.out.println(error.toString()));
 //
             session.setAttribute("message", MessageHelper.builder().content("Please correct the following errors").type(MessageType.red).build());
-
-
             return "user/add_contact";
         }
 
 
-        String username = Helper.getEmailOfLoggedInUser(authentication);
-        User user = userService.getUserByEmail(username);
+        String email = Helper.getEmailOfLoggedInUser(authentication);
+        User user = userService.getUserByEmail(email);
 
         Contact contact = getContact(contactForm, user);
 
@@ -192,6 +191,7 @@ public class ContactConroller {
 
         model.addAttribute("contactSearchForm", contactSearchForm);
 
+     System.out.println("--------25 --" + pageContact);
         model.addAttribute("pageContact", pageContact);
 
         model.addAttribute("pageSize", AppConstants.PAGE_SIZE);
@@ -215,7 +215,7 @@ public class ContactConroller {
 
 
     @RequestMapping("/view_update/{id}")
-    public String updateContact(@PathVariable int id , HttpSession session , Model model){
+    public String updateContact(@PathVariable int id , Model model){
 
         Contact contact = contactService.getContactById(id);
         ContactForm contactForm = new ContactForm();
@@ -243,11 +243,13 @@ public class ContactConroller {
 
 
         if (result.hasErrors()){
-            model.addAttribute("contactid" , id);
+//            model.addAttribute("contactid" , id);
             System.out.println(contactform);
             System.out.println("get photo url :-" + contactform.getPicture());
             return "user/update_contact";
         }
+
+        System.out.println(contactform);
 
             Contact contact = contactService.getById(id);
             contact.setId(id);

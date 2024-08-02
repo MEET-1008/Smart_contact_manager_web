@@ -3,6 +3,20 @@
         lang="en"
         th:replace="~{base :: parent(~{::#content},~{::title},~{::script})}"
 >
+
+=========Disable broser back button ==========
+
+
+<script language='javascript' type='text/javascript'>
+    function DisableBackButton() {
+        window.history.forward()
+    }
+    DisableBackButton();
+    window.onload = DisableBackButton;
+    window.onpageshow = function(evt) { if (evt.persisted) DisableBackButton() }
+    window.onunload = function() { void (0) }
+</script>
+
 <head>
     <title>login</title>
 </head>
@@ -26,6 +40,7 @@
                         <h1 class=" text-2xl text-center mb-5"> login </h1>
                     </div>
 
+                    <div data-th-replace="~{message::messagebox}"></div>
 
                     <div th:if="${param.error}" class="text-center text-red-600 my-3">invalid username and password.
                     </div>
@@ -44,7 +59,7 @@
                                 type="email"
                                 id="email"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                placeholder="name@flowbite.com"
+                                placeholder="meet@gmail.com"
                                 required
                         />
                         <p
@@ -116,7 +131,7 @@
                     <div class="mb-5 mt-5 flex justify-center space-x-3">
                         <button class=" items-center  bg-white dark:bg-gray-600 my-5  flex justify-center border border-gray-300 rounded-lg shadow-md px-6 py-2 text-sm font-medium text-gray-800 dark:text-white hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
 
-                           <img class="w-5   h-5 mr-3" src="https://cdn.icon-icons.com/icons2/2428/PNG/512/github_black_logo_icon_147128.png">
+                            <img class="w-5   h-5 mr-3" src="https://cdn.icon-icons.com/icons2/2428/PNG/512/github_black_logo_icon_147128.png">
                             <span>  Continue with github </span>
                         </button>
 

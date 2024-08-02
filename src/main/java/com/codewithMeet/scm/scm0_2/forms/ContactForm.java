@@ -13,12 +13,12 @@ import org.springframework.web.multipart.MultipartFile;
 @ToString
 public class ContactForm {
 
-    @NotBlank(message = "User name is Required..")
+    @NotBlank(message = "Contact name is Required..")
     @Size(min = 3 , message = "min 3 characters required..")
     private String name;
 
 
-    @NotBlank(message = "User phoneNumber is Required..")
+    @NotBlank(message = "Contact phoneNumber is Required..")
     @Size(min = 10 , message = "min 10 characters required..")
     @Size(max = 12 , message = "max 12 number enter")
     private String phoneNumber;

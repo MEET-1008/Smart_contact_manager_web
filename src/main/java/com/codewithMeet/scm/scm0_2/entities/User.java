@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Setter
 @Getter
 @Entity
@@ -43,6 +42,9 @@ public class User implements UserDetails
 
     private boolean emailverified = false;
     private boolean phoneverified = false;
+    private boolean enabled = false;
+
+    private String emailToken;
 
 //    SELF, GOOGLE, INSTAGRAM, FACEBOOK
 
@@ -93,7 +95,7 @@ public class User implements UserDetails
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return this.enabled;
     }
 
 

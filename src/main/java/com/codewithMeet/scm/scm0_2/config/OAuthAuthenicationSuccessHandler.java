@@ -152,6 +152,7 @@ public class OAuthAuthenicationSuccessHandler implements AuthenticationSuccessHa
             System.out.println("user saved email id is :" + user.getEmail());
         }
 
+
         new DefaultRedirectStrategy().sendRedirect(request, response, "/user/dashboard");
 
     }
