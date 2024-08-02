@@ -24,14 +24,14 @@
             <div data-th-replace="~{message::messagebox} " class="mt-5"></div>
 
 
-            <div class=" overflow-x-auto shadow-md sm:rounded-lg  rounded-lg p-5">
+            <div class=" flex md:flex-row flex-col  items-center px-4 justify-between overflow-x-auto shadow-md sm:rounded-lg  rounded-lg p-5">
 
 
                 <!--                search modal  -->
 
                 <!-- select box   -->
                 <form
-                        data-th-object="${contactSearchForm}"
+                        data-th-object=" ${contactSearchForm}"
                         data-th-action="@{'/user/contacts/search'}"
                 >
                     <div
@@ -59,7 +59,7 @@
                                 </svg>
                             </div>
                             <input
-                                    data-th-field="*{value}"
+                                    data-th-field="${contactSearchForm.value}"
                                     type="text"
                                     id="table-search-users"
                                     class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -75,10 +75,20 @@
                         </button>
                     </div>
                 </form>
+
+                <div>
+                    <button
+                            type="button"
+                            onclick="exportData()"
+                            class="px-3 py-2 bg-green-800 text-white rounded"
+                    >
+                        Export
+                    </button>
+                </div>
             </div>
 
             <!--                data in table format -->
-            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 border-blue-600">
+            <table id="contact-table" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 border-blue-600">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                     <th scope="col" class="px-5 py-3">
@@ -215,10 +225,16 @@
 
 
 <script data-th-src="@{'/js/contact.js'}"></script>
+<script src="https://cdn.jsdelivr.net/npm/@linways/table-to-excel@1.0.4/dist/tableToExcel.min.js"></script>
 <script>
-    console.log("this is contact page");
-
-
+    function exportData() {
+        TableToExcel.convert(document.getElementById("contact-table"), {
+            name: "contacts.xlsx",
+            sheet: {
+                name: "Sheet 1",
+            },
+        });
+    }
 </script>
 </body>
 </html>
