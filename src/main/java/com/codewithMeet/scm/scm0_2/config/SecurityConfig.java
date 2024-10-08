@@ -24,6 +24,8 @@ public class SecurityConfig {
 
     @Autowired
     AuthFailtureHandler authFailureHandler;
+
+
  /*
 
 
@@ -68,7 +70,7 @@ public class SecurityConfig {
 
 //        url configure  url is private or not
         http.authorizeHttpRequests(authorize -> {
-//          authorize.requestMatchers("/home" , "/signup" ,"/login").permitAll();
+            authorize.requestMatchers("/home" , "/signup" ,"/login").permitAll();
             authorize.requestMatchers("user/delet/**").permitAll();
             authorize.requestMatchers("user/**").authenticated();
             authorize.requestMatchers("admin/**").authenticated();
@@ -81,13 +83,13 @@ public class SecurityConfig {
             formLogin.loginPage("/login");
             formLogin.loginProcessingUrl("/authenticate");
             formLogin.successForwardUrl("/user/dashboard");
-//          formLogin.failureForwardUrl("/login?error=true");
+          formLogin.failureForwardUrl("/login?error=true");
             formLogin.usernameParameter("email");
             formLogin.passwordParameter("password");
             formLogin.failureHandler(authFailureHandler);
 
         });
-
+    
 
         http.csrf(AbstractHttpConfigurer::disable);
         // oauth configurations

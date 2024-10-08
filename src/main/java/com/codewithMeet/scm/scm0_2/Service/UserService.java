@@ -22,6 +22,10 @@ public interface UserService  {
 
     Optional<User> getAllUser ();
 
+    boolean changePassword(String email ,String oldPassword, String newPassword);
+
+    boolean changePasswordOth2(String email ,String OTP, String newPassword);
+
 
 
 

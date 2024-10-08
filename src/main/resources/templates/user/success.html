@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        th:replace="~{base :: parent(~{::#content},~{::title},~{::script})}"
+>
+<head>
+    <title data-th-text="${user.username}+' |  Profile'">
+        Profile Page
+    </title>
+</head>
+<body>
+<div id="content">
+    <!-- sidebar -->
+
+    <!-- user is logged in : sidebar -->
+
+    <div th:if="${user}">
+        <div data-th-replace="~{user/sidebar :: sidebar}"></div>
+    </div>
+
+    <div class="sm:pl-64 pt-20" style="height: 1000px">
+        <div class="flex justify-center flex-col items-center">
+            <!-- component -->
+            <div class="py-14 px-4 w-full md:px-6 2xl:px-20 2xl:container 2xl:mx-auto">
+                <!--- more free and premium Tailwind CSS components at https://tailwinduikit.com/ --->
+                <div><h1 class="text-center text-green-600 text-5xl"><i class="fa-solid fa-circle-check"></i> plan Activated successfully...!</h1>
+                    <div class="flex justify-start item-start space-y-2 flex-col">
+                        <h1 class=" pt-5 text-3xl dark:text-white lg:text-4xl font-semibold  leading-7 lg:leading-9 text-gray-800 ">
+                            Order id :- #<span data-th-text="*{order.getRazorPayOrderId()}"></span></h1>
+                        <p class="text-base pb-5 dark:text-gray-300 font-medium leading-6 text-gray-600"> order Date :-
+                            <span data-th-text="*{order.getOrderDate()}"></span></p>
+                        <p class="text-base pb-5 dark:text-green-600 font-medium leading-6 text-gray-600"> order Amount :-
+                            <span data-th-text="*{order.getAmount()}"></span></p>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    console.log("this is profile page");
+</script>
+</body>
+</html>

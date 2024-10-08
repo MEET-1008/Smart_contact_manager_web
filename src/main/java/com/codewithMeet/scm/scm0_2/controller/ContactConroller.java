@@ -1,10 +1,12 @@
 package com.codewithMeet.scm.scm0_2.controller;
 
-import com.codewithMeet.scm.scm0_2.entities.Contact;
 import com.codewithMeet.scm.scm0_2.Repo.ContactRepo;
 import com.codewithMeet.scm.scm0_2.Service.ContactService;
 import com.codewithMeet.scm.scm0_2.Service.ImgService;
+import com.codewithMeet.scm.scm0_2.Service.PaymentService;
 import com.codewithMeet.scm.scm0_2.Service.UserService;
+import com.codewithMeet.scm.scm0_2.entities.Contact;
+import com.codewithMeet.scm.scm0_2.entities.Payment;
 import com.codewithMeet.scm.scm0_2.entities.User;
 import com.codewithMeet.scm.scm0_2.forms.ContactForm;
 import com.codewithMeet.scm.scm0_2.forms.ContactSearchForm;
@@ -24,6 +26,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.List;
 
 @Controller
 @RequestMapping("/user/contacts")
@@ -40,7 +43,31 @@ public class ContactConroller {
     ImgService imgService;
 
     @Autowired
+    PaymentService  paymentService;
+
+    @Autowired
     private ContactRepo contactRepo;
+
+
+    @GetMapping("/buy-subscription")
+    public String buySubscription(Model model) {
+
+        model.addAttribute("price1" , "120");
+        model.addAttribute("price2" , "150");
+        model.addAttribute("price3" , "200");
+
+        return "user/price-section";
+    }
+
+    @GetMapping("/showPaymentPage")
+    public String paymentDetails(Model model , Authentication auth) {
+        String email = Helper.getEmailOfLoggedInUser(auth);
+        User user = userService.getUserByEmail(email);
+        List<Payment> payments = paymentService.showAllPayment(user.getUserid());
+        model.addAttribute("payments", payments);
+        return "user/showPaymentPage";
+    }
+
 
     @GetMapping("/add")
     // add contact page: handler
@@ -72,9 +99,17 @@ public class ContactConroller {
 
         Contact contact = getContact(contactForm, user);
 
-        contactService.save(contact);
+        int totalAllowedContacts = contactService.getTotalAllowedContacts(user.getUserid());
+        int contactsCount = contactService.getContactCount(user.getUserid());
+        if (totalAllowedContacts >  contactsCount) {
+            contactService.save(contact);
+            session.setAttribute("message", MessageHelper.builder().content("your contact added successfully").type(MessageType.green).build());
 
-        session.setAttribute("message", MessageHelper.builder().content("your contact added successfully").type(MessageType.green).build());
+        }
+        else {
+           session.setAttribute("message", MessageHelper.builder().content("Upgrade your subscription to add more contacts.").type(MessageType.red).build());
+
+        }
 
 
         return "user/add_contact";
@@ -86,12 +121,12 @@ public class ContactConroller {
         Contact contact = new Contact();
 
 
-
-        if(contactForm.getContactImage() != null  && !contactForm.getContactImage().isEmpty()){
+        if (contactForm.getContactImage() != null && !contactForm.getContactImage().isEmpty()) {
             System.out.println("img is null or not this chake .....  " + contactForm.getContactImage().getOriginalFilename());
             System.out.println(" file name ::------ " + contactForm.getContactImage().getOriginalFilename());
 
             String FilURL = this.imgService.UploadIMG(contactForm.getContactImage());
+            System.out.println("************");
             contact.setContactImage(FilURL);
         }
         contact.setName(contactForm.getName());
@@ -132,44 +167,8 @@ public class ContactConroller {
         return "user/contacts";
     }
 
-    // search handler
 
-//    @RequestMapping("/search")
-//    public String searchHandler(
-//
-//            @ModelAttribute ContactSearchForm contactSearchForm,
-//            @RequestParam(value = "size", defaultValue = AppConstants.PAGE_SIZE + "") int size,
-//            @RequestParam(value = "page", defaultValue = "0") int page,
-//            @RequestParam(value = "sortBy", defaultValue = "name") String sortBy,
-//            @RequestParam(value = "direction", defaultValue = "asc") String direction,
-//            Model model,
-//            Authentication authentication) {
-//
-//        System.out.println("field { " +contactSearchForm.getField() + " } keyword { "+ contactSearchForm.getValue() +"} " );
-//
-//        var user = userService.getUserByEmail(Helper.getEmailOfLoggedInUser(authentication));
-//
-//        Page<Contact> pageContact = null;
-//        if (contactSearchForm.getField().equalsIgnoreCase("name")) {
-//            pageContact = contactService.searchByName(contactSearchForm.getValue(), size, page, sortBy, direction,user);
-//        } else if (contactSearchForm.getField().equalsIgnoreCase("email")) {
-//            pageContact = contactService.searchByEmail(contactSearchForm.getValue(), size, page, sortBy, direction,user);
-//        } else if (contactSearchForm.getField().equalsIgnoreCase("phone")) {
-//            pageContact = contactService.searchByPhoneNumber(contactSearchForm.getValue(), size, page, sortBy,direction, user);
-//        }
-//
-//        System.out.println("pageContact { "+ pageContact + "}");
-//
-//        model.addAttribute("contactSearchForm", contactSearchForm);
-//
-//        model.addAttribute("pageContact", pageContact);
-//
-//        model.addAttribute("pageSize", AppConstants.PAGE_SIZE);
-//
-//        return "user/search";
-//    }
-
- @RequestMapping("/search")
+    @RequestMapping("/search")
     public String searchHandler(
 
             @ModelAttribute ContactSearchForm contactSearchForm,
@@ -180,18 +179,18 @@ public class ContactConroller {
             Model model,
             Authentication authentication) {
 
-        System.out.println("field { " +contactSearchForm.getField() + " } keyword { "+ contactSearchForm.getValue() +"} " );
+        System.out.println("field { " + contactSearchForm.getField() + " } keyword { " + contactSearchForm.getValue() + "} ");
 
         var user = userService.getUserByEmail(Helper.getEmailOfLoggedInUser(authentication));
 
-        Page<Contact> pageContact = contactService.searchKeyword(contactSearchForm.getValue(),size,page,sortBy,direction,user);
+        Page<Contact> pageContact = contactService.searchKeyword(contactSearchForm.getValue(), size, page, sortBy, direction, user);
 
 
-        System.out.println("pageContact { "+ pageContact + "}");
+        System.out.println("pageContact { " + pageContact + "}");
 
         model.addAttribute("contactSearchForm", contactSearchForm);
 
-     System.out.println("--------25 --" + pageContact);
+        System.out.println("--------25 --" + pageContact);
         model.addAttribute("pageContact", pageContact);
 
         model.addAttribute("pageSize", AppConstants.PAGE_SIZE);
@@ -200,13 +199,11 @@ public class ContactConroller {
     }
 
 
-
-
     @RequestMapping("/delete/{id}")
-    public String deletcontact(@PathVariable int id , HttpSession session){
+    public String deletContact(@PathVariable int id, HttpSession session) {
 
         contactService.deleteContact(id);
-        System.out.println("contct deleted " +id );
+        System.out.println("contct deleted " + id);
         session.setAttribute("message", MessageHelper.builder().content("your contact deleted successfully").type(MessageType.green).build());
 
 
@@ -215,7 +212,7 @@ public class ContactConroller {
 
 
     @RequestMapping("/view_update/{id}")
-    public String updateContact(@PathVariable int id , Model model){
+    public String updateContact(@PathVariable int id, Model model) {
 
         Contact contact = contactService.getContactById(id);
         ContactForm contactForm = new ContactForm();
@@ -230,19 +227,17 @@ public class ContactConroller {
         contactForm.setPicture(contact.getContactImage());
 
         model.addAttribute("contactForm", contactForm);
-        model.addAttribute("contactid" , id);
+        model.addAttribute("contactid", id);
         return "user/update_contact";
 
     }
 
 
-
-
     @PostMapping("/update/{id}")
-        public String updateContactPost(@PathVariable int id ,@Valid @ModelAttribute ContactForm contactform , BindingResult result ,   HttpSession session , Model model) throws IOException {
+    public String updateContactPost(@PathVariable int id, @Valid @ModelAttribute ContactForm contactform, BindingResult result, HttpSession session, Model model) throws IOException {
 
 
-        if (result.hasErrors()){
+        if (result.hasErrors()) {
 //            model.addAttribute("contactid" , id);
             System.out.println(contactform);
             System.out.println("get photo url :-" + contactform.getPicture());
@@ -251,27 +246,27 @@ public class ContactConroller {
 
         System.out.println(contactform);
 
-            Contact contact = contactService.getById(id);
-            contact.setId(id);
-            contact.setName(contactform.getName());
-            contact.setFavorite(contactform.getFavorite());
-            contact.setEmail(contactform.getEmail());
-            contact.setPhoneNumber(contactform.getPhoneNumber());
-            contact.setAddress(contactform.getAddress());
-            contact.setDescription(contactform.getDescription());
-            contact.setLinkedInLink(contactform.getLinkedInLink());
-            contact.setWebsiteLink(contactform.getWebsiteLink());
+        Contact contact = contactService.getById(id);
+        contact.setId(id);
+        contact.setName(contactform.getName());
+        contact.setFavorite(contactform.getFavorite());
+        contact.setEmail(contactform.getEmail());
+        contact.setPhoneNumber(contactform.getPhoneNumber());
+        contact.setAddress(contactform.getAddress());
+        contact.setDescription(contactform.getDescription());
+        contact.setLinkedInLink(contactform.getLinkedInLink());
+        contact.setWebsiteLink(contactform.getWebsiteLink());
 
 
-            if(contactform.getContactImage() != null && !contactform.getContactImage().isEmpty()){
-                String fileUrl = imgService.UploadIMG(contactform.getContactImage());
-                contact.setContactImage(fileUrl);
-                contactform.setPicture(fileUrl);
-            }
+        if (contactform.getContactImage() != null && !contactform.getContactImage().isEmpty()) {
+            String fileUrl = imgService.UploadIMG(contactform.getContactImage());
+            contact.setContactImage(fileUrl);
+            contactform.setPicture(fileUrl);
+        }
 
         model.addAttribute("message", MessageHelper.builder().content("your contact update  successfully").type(MessageType.green).build());
         Contact contact1 = contactService.updateContact(contact);
 //        return "user/view_update/" + id  ;
         return "redirect:/user/contacts/view_update/" + id;
-        }
+    }
 }

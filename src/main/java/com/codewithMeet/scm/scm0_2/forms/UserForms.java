@@ -31,5 +31,9 @@ public class UserForms {
     @NotBlank( message = " About  Required ")
     private String about;
 
+    private String expiryDate;
+
+    private String subscriptionPlan;
+
 
 }

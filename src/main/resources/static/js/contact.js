@@ -1,6 +1,8 @@
 const viewcontactdata = document.getElementById("contact_model_show_data");
 
 
+// mycontacts.ap-south-1.elasticbeanstalk.com
+
 const options = {
     placement: 'bottom-right',
     backdrop: 'dynamic',
@@ -103,6 +105,26 @@ async function deleteContactModal(id) {
             window.location.replace(url)
         }
     });
+
+}
+
+async function cancelsubscription(id) {
+    Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            console.log('contact id is : - ' + id);
+            const url = "http://localhost:8080/user/payment/cancel/" + id;
+            window.location.replace(url)
+        }
+    });
+
 }
 
 

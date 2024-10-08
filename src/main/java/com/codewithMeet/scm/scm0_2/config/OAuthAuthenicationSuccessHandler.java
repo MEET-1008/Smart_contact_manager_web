@@ -44,11 +44,8 @@ public class OAuthAuthenicationSuccessHandler implements AuthenticationSuccessHa
         // identify the provider
 
         var oauth2AuthenicationToken = (OAuth2AuthenticationToken) authentication;
-
         String authorizedClientRegistrationId = oauth2AuthenicationToken.getAuthorizedClientRegistrationId();
-
         System.out.println(authorizedClientRegistrationId);
-
         var oauthUser = (DefaultOAuth2User) authentication.getPrincipal();
 
 //        print the all element
@@ -71,8 +68,8 @@ public class OAuthAuthenicationSuccessHandler implements AuthenticationSuccessHa
             user.setProfilepic(oauthUser.getAttribute("picture"));
             user.setUsername(oauthUser.getAttribute("name"));
             user.setProviderUserId(oauthUser.getName());
-//            user.setPassword(oauthUser.getAttribute("password"));
-            user.setPassword(oauthUser.getName() + "@2024");
+            String password = oauthUser.getAttribute("email")+ "@2024";
+            user.setPassword(passwordEncoder.encode(password));
             user.setProvider(Providers.GOOGLE);
             user.setAbout("This account is created using google.");
 
@@ -81,7 +78,8 @@ public class OAuthAuthenicationSuccessHandler implements AuthenticationSuccessHa
             // github
 
             user.setEmail(oauthUser.getAttribute("email"));
-            user.setPassword(oauthUser.getName() + "@2024");
+            String password = oauthUser.getAttribute("email")+ "@2024";
+            user.setPassword(passwordEncoder.encode(password));
             user.setProfilepic(oauthUser.getAttribute("avatar_url"));
             user.setUsername(oauthUser.getAttribute("login"));
             user.setProviderUserId(oauthUser.getName());
@@ -148,6 +146,10 @@ public class OAuthAuthenicationSuccessHandler implements AuthenticationSuccessHa
         User user2 = userRepo.findByEmail(user.getEmail()).orElse(null);
 
         if (user2 == null) {
+            user.setExpiryDate("NULL");
+            user.setSubscriptionPlan("FREE");
+            user.setEmailToken("NULL");
+            user.setSubscription(false);
             userRepo.save(user);
             System.out.println("user saved email id is :" + user.getEmail());
         }

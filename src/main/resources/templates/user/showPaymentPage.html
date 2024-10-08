@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        th:replace="~{base :: parent(~{::#content},~{::title},~{::script})}"
+>
+<head>
+    <title data-th-text="${user.username}+' |  Profile'">
+        Profile Page
+    </title>
+
+</head>
+<body>
+<div id="content">
+    <!-- sidebar -->
+
+    <!-- user is logged in : sidebar -->
+
+    <div th:if="${user}">
+        <div data-th-replace="~{user/sidebar :: sidebar}"></div>
+    </div>
+
+    <div class="sm:pl-64  pt-20" style="height: 1000px">
+        <div class="flex justify-center flex-col items-center">
+            <h1 class="text-5xl">Your Payment History.</h1>
+        </div>
+
+
+
+        <div class=" mt-10 ml-5 mr-5 relative overflow-x-auto shadow-md sm:rounded-lg">
+            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-center text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr >
+                    <th scope="col" class="px-6 py-3 text-start">
+                        RazorPay OrderId
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Amount
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Order Status
+                    </th>
+
+                    <th scope="col" class="px-6 py-3">
+                        Order Date
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr
+                        data-th-object="${c}"
+                        data-th-each="c : ${payments}"
+                        class="bg-white uppercase text-center border-b dark:bg-gray-800 dark:border-gray-700">
+                    <th scope="row" class=" text-start px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white" data-th-text="*{getRazorPayOrderId()}"></th>
+                    <td class="px-6 py-4" data-th-text="*{getAmount()}"> </td>
+
+                    <td class="px-6 py-4" th:text="*{getOrderStatus()}"
+                        th:classappend="*{getOrderStatus() == 'CONFIRMED'} ? 'text-green-500' : 'text-yellow-500'">
+                    </td>                    <td class="px-6 py-4" data-th-text="*{orderDate}"></td>
+
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+    console.log("this is profile page");
+</script>
+
+
+</body>
+</html>
+

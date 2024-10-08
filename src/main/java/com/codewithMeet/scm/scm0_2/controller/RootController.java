@@ -69,8 +69,10 @@ package com.codewithMeet.scm.scm0_2.controller;
 //
 
 
-
+import com.codewithMeet.scm.scm0_2.Service.ContactService;
+import com.codewithMeet.scm.scm0_2.Service.PaymentService;
 import com.codewithMeet.scm.scm0_2.Service.UserService;
+import com.codewithMeet.scm.scm0_2.entities.Payment;
 import com.codewithMeet.scm.scm0_2.entities.User;
 import com.codewithMeet.scm.scm0_2.helper.Helper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,6 +89,14 @@ public class RootController {
     @Autowired
     private UserService userService;
 
+
+    @Autowired
+    private ContactService contactService;
+
+    @Autowired
+    private PaymentService paymentService;
+
+
     @ModelAttribute
     public void addLoggedInUserInformation(Model model, Authentication authentication) {
         if (authentication == null) {
@@ -95,16 +105,35 @@ public class RootController {
         System.out.println("Adding logged in user information to the model");
 
         String email = Helper.getEmailOfLoggedInUser(authentication);
-        System.out.println("User logged in: "+  "{ " +email + " }");
+        User user = userService.getUserByEmail(email);
+        System.out.println("User logged in: " + "{ " + email + " }");
         // database se data ko fetch : get user from db :
 //        User user = userService.getUserByEmail("jay@gmail.com");
-        User user = userService.getUserByEmail(email);
 
-        System.out.println(" user finding..." +user);
+        System.out.println(" user finding..." + user);
         System.out.println(user.getUsername());
         System.out.println(user.getEmail());
+        int totalAllowedContacts = contactService.getTotalAllowedContacts(user.getUserid());
+        int contactsCount = contactService.getContactCount(user.getUserid());
+        if (totalAllowedContacts <  contactsCount) {
+            model.addAttribute("notis", true);
+        }
+        else
+            model.addAttribute("notis", false);
 
+
+        String profilepic = user.getProfilepic();
+model.addAttribute("profilepic", profilepic);
+        Payment order = paymentService.findPaymentById(user.getPaymentId());
+        model.addAttribute("order", order);
+        model.addAttribute("expiryDate", user.getExpiryDate());
+        model.addAttribute("totalAllowedContacts", totalAllowedContacts);
+        model.addAttribute("subscriptionplan", user.getSubscriptionPlan());
         model.addAttribute("user", user);
+        model.addAttribute("userid", user.getUserid());
+        model.addAttribute("email", user.getEmail());
+        model.addAttribute("contactsCount", contactsCount);
+
 
     }
 }
