@@ -25,6 +25,9 @@ public interface ContactService {
 
     Page<Contact> getContactsByUser(User user, int Page, int PageSize, String SortBy, String Direction);
 
+    int getTotalAllowedContacts(int id);
+
+    int getContactCount(int Id);
 
     Page<Contact> searchKeyword(
             String key,
@@ -34,3 +37,4 @@ public interface ContactService {
             String order,
             User user);
     }
+

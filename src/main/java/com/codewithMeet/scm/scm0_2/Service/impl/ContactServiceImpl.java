@@ -1,5 +1,6 @@
 package com.codewithMeet.scm.scm0_2.Service.impl;
 
+import com.codewithMeet.scm.scm0_2.Repo.UserRepo;
 import com.codewithMeet.scm.scm0_2.entities.Contact;
 import com.codewithMeet.scm.scm0_2.exception.ResouecenotfoundException;
 import com.codewithMeet.scm.scm0_2.Repo.ContactRepo;
@@ -12,12 +13,16 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ContactServiceImpl implements ContactService {
 
     @Autowired
     ContactRepo contactRepo;
+
+    @Autowired
+    UserRepo userRepo;
 
 
     @Override
@@ -60,7 +65,7 @@ public class ContactServiceImpl implements ContactService {
         contact.setDescription(contactform.getDescription());
         contact.setLinkedInLink(contactform.getLinkedInLink());
         contact.setWebsiteLink(contactform.getWebsiteLink());
-        contact.setContactImage(contactform.getContactImage())  ;
+        contact.setContactImage(contactform.getContactImage());  ;
 
         return   contactRepo.save(contact);
 
@@ -78,6 +83,35 @@ public class ContactServiceImpl implements ContactService {
         var pageable = PageRequest.of(page, size, sort);
         return contactRepo.findByUser(user , pageable);
     }
+
+    @Override
+    public int getTotalAllowedContacts(int Id) {
+        int i = contactRepo.countByUserUserid(Id);
+        User user = userRepo.findById(Id).orElseThrow(() -> new ResouecenotfoundException("user not found", "id", Id));
+        int countAllowContacts = user.getCountAllowContacts();
+        String subscriptionPlan = user.getSubscriptionPlan();
+        if (subscriptionPlan.equalsIgnoreCase("FREE")) {
+            countAllowContacts =  4 ;
+        }
+        else if (subscriptionPlan.equalsIgnoreCase("BASIC")) {
+            countAllowContacts = countAllowContacts + 10 ;
+        }
+        else if (subscriptionPlan.equalsIgnoreCase("PRO")) {
+            countAllowContacts = countAllowContacts + 100 ;
+        }
+        else if (subscriptionPlan.equalsIgnoreCase("PREMIUM")) {
+            countAllowContacts = countAllowContacts + Integer.MAX_VALUE;
+        }
+        return countAllowContacts;
+    }
+
+    @Override
+    public int getContactCount(int Id) {
+        return contactRepo.countByUserUserid(Id);
+    }
+
+
+
 
 
     @Override

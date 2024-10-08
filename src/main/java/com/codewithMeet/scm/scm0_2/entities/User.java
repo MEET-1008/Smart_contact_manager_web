@@ -46,6 +46,8 @@ public class User implements UserDetails
 
     private String emailToken;
 
+    private String passwordChangeOtp;
+
 //    SELF, GOOGLE, INSTAGRAM, FACEBOOK
 
     @Enumerated(value = EnumType.STRING)
@@ -55,6 +57,19 @@ public class User implements UserDetails
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Contact> contacts = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user" , cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<Payment> payments = new ArrayList<>();
+
+    private boolean Subscription = false;
+
+    private String subscriptionPlan;
+
+    private String paymentId;
+
+    @Transient
+    private int countAllowContacts;
+
+    private String expiryDate;
 
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roleList = new ArrayList<>();

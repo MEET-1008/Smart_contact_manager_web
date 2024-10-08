@@ -3,12 +3,11 @@
         lang="en"
         th:replace="~{base :: parent(~{::#content},~{::title},~{::script})}"
 >
-
-
 <head>
-    <title data-th-text="${user.username}+' |  Dashboard'">
+    <title data-th-text="${user.username}+' |  Profile'">
         Profile Page
     </title>
+
 </head>
 <body>
 <div id="content">
@@ -28,12 +27,192 @@
                 Consequatur, ratione!
             </p>
         </div>
+
+        <div class="grid grid-cols-4  gap-4 px-4 mt-8 sm:grid-cols-4 sm:px-8">
+            <div class="flex items-center bg-white border rounded-sm w-1/3  shadow">
+                <div class="p-4 bg-green-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-white" fill="none" viewBox="0 0 24 24"
+                         stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z">
+                        </path>
+                    </svg>
+                </div>
+                <div class="px-4 text-gray-700">
+                    <h3 class="text-sm tracking-wider">Current Contacts</h3>
+                    <p class="text-3xl" data-th-text="*{contactsCount}"></p>
+                </div>
+            </div>
+            <div class="flex items-center bg-white border rounded-sm overflow-hidden shadow">
+                <div class="p-4 bg-blue-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-white" fill="none"
+                         viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2">
+                        </path>
+                    </svg>
+                </div>
+                <div class="px-4 text-gray-700">
+                    <h3 class="text-sm tracking-wider">Total Allowed</h3>
+                    <p class="text-3xl" data-th-text="*{totalAllowedContacts}"></p>
+                </div>
+            </div>
+            <div class="flex items-center bg-white border rounded-sm overflow-hidden shadow">
+                <div class="p-4 bg-indigo-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-white" fill="none"
+                         viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z">
+                        </path>
+                    </svg>
+                </div>
+                <div class="px-4 text-gray-700">
+                    <h3 class="text-sm tracking-wider">Subscription Type</h3>
+                    <p class="text-2xl text-green-600" data-th-text="*{subscriptionplan}"></p>
+                </div>
+            </div>
+            <div class="flex items-center bg-white border rounded-sm overflow-hidden shadow">
+                <div class="p-4 bg-red-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-white" fill="none"
+                         viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4">
+                        </path>
+                    </svg>
+                </div>
+                <div class="px-4 text-gray-700">
+                    <h3 class="text-sm tracking-wider">Plan Expiry Date</h3>
+                    <p class="text-3xl" data-th-text="*{expiryDate}"></p>
+                </div>
+            </div>
+        </div>
+
+        <div data-th-if="*{notis}" class="text-red-600 w-auto text-center mt-5">
+
+            <p><i class="fa-solid fa-circle-exclamation"></i> Please purchase a subscription plan, otherwise your
+                remaining contacts will be automatically deleted.</p>
+        </div>
+
+        <div class=" mt-14 ml-6 flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
+             data-th-if="*{user.subscription}">
+            <div>
+                <h1 class="text-center text-green-600 text-7xl mt-5 "><i class=" fa-solid fa-circle-check"></i></h1>
+                <h1 class="text-center text-green-600 text-3xl mt-5 ">Active</h1>
+                <div class="p-6 xl:pt-9 xl:px-12">
+                    <h3 class="font-manrope text-2xl font-bold mb-3">Advanced</h3>
+                    <div class="flex items-center mb-6">
+                       <span class=" font-manrope mr-2 text-6xl font-semibold text-indigo-600"
+                             data-th-text="*{order.amount}"></span>
+                        <span class="text-xl text-gray-500 ">/ month</span>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <button type="button"
+                            th:onclick="cancelsubscription([[${userid}]])"
+                            class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">
+                        cancel plan
+                    </button>
+
+                </div>
+            </div>
+            <div class="flex flex-col justify-between p-4 leading-normal">
+                <div class="p-6 xl:pb-9 xl:px-12">
+                    <!--List-->
+                    <ul class="mb-12 space-y-6 text-left text-lg ">
+                        <li class="flex items-center space-x-4">
+                            <!-- Icon -->
+                            <svg class="flex-shrink-0 w-6 h-6 text-indigo-600" viewBox="0 0 30 30" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path d="M10 14.7875L13.0959 17.8834C13.3399 18.1274 13.7353 18.1275 13.9794 17.8838L20.625 11.25M15 27.5C8.09644 27.5 2.5 21.9036 2.5 15C2.5 8.09644 8.09644 2.5 15 2.5C21.9036 2.5 27.5 8.09644 27.5 15C27.5 21.9036 21.9036 27.5 15 27.5Z"
+                                      stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+                                      stroke-linejoin="round"/>
+                            </svg>
+                            <span>AI Advisor</span>
+                        </li>
+                        <li class="flex items-center space-x-4">
+                            <!-- Icon -->
+                            <svg class="flex-shrink-0 w-6 h-6 text-indigo-600" viewBox="0 0 30 30" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path d="M10 14.7875L13.0959 17.8834C13.3399 18.1274 13.7353 18.1275 13.9794 17.8838L20.625 11.25M15 27.5C8.09644 27.5 2.5 21.9036 2.5 15C2.5 8.09644 8.09644 2.5 15 2.5C21.9036 2.5 27.5 8.09644 27.5 15C27.5 21.9036 21.9036 27.5 15 27.5Z"
+                                      stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+                                      stroke-linejoin="round"/>
+                            </svg>
+                            <span>Unlimited auto tracking</span>
+                        </li>
+                        <li class="flex items-center space-x-4">
+                            <!-- Icon -->
+                            <svg class="flex-shrink-0 w-6 h-6 text-indigo-600" viewBox="0 0 30 30" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path d="M10 14.7875L13.0959 17.8834C13.3399 18.1274 13.7353 18.1275 13.9794 17.8838L20.625 11.25M15 27.5C8.09644 27.5 2.5 21.9036 2.5 15C2.5 8.09644 8.09644 2.5 15 2.5C21.9036 2.5 27.5 8.09644 27.5 15C27.5 21.9036 21.9036 27.5 15 27.5Z"
+                                      stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+                                      stroke-linejoin="round"/>
+                            </svg>
+                            <span>1 Day transaction clearing </span>
+                        </li>
+                        <li class="flex items-center space-x-4">
+                            <!-- Icon -->
+                            <svg class="flex-shrink-0 w-6 h-6 text-indigo-600" viewBox="0 0 30 30" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path d="M10 14.7875L13.0959 17.8834C13.3399 18.1274 13.7353 18.1275 13.9794 17.8838L20.625 11.25M15 27.5C8.09644 27.5 2.5 21.9036 2.5 15C2.5 8.09644 8.09644 2.5 15 2.5C21.9036 2.5 27.5 8.09644 27.5 15C27.5 21.9036 21.9036 27.5 15 27.5Z"
+                                      stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+                                      stroke-linejoin="round"/>
+                            </svg>
+                            <span>Priority customer support</span>
+                        </li>
+                        <li class="flex items-center space-x-4">
+                            <!-- Icon -->
+                            <svg class="flex-shrink-0 w-6 h-6 text-indigo-600" viewBox="0 0 30 30" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path d="M10 14.7875L13.0959 17.8834C13.3399 18.1274 13.7353 18.1275 13.9794 17.8838L20.625 11.25M15 27.5C8.09644 27.5 2.5 21.9036 2.5 15C2.5 8.09644 8.09644 2.5 15 2.5C21.9036 2.5 27.5 8.09644 27.5 15C27.5 21.9036 21.9036 27.5 15 27.5Z"
+                                      stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+                                      stroke-linejoin="round"/>
+                            </svg>
+                            <span>All Widget Access</span>
+                        </li>
+                    </ul>
+                    <!--List End-->
+                </div>
+            </div>
+        </div>
+
+        <div class=" mt-14 ml-6  flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
+             data-th-unless="*{user.subscription}">
+            <div>
+                <h1 class="text-center text-red-600 text-7xl mt-5 ">
+                    <i class="fa-solid fa-circle-xmark"></i>
+                </h1>
+                <h1 class="text-center text-red-600 text-3xl my-5 ml-5">No plans are active</h1>
+                <div class="mb-5	text-center">
+                    <a href="../user/contacts/buy-subscription">
+                        <button type="button"
+                                class=" justify-center content-center	 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            <svg class="w-3.5 h-3.5 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                 fill="currentColor" viewBox="0 0 18 21">
+                                <path d="M15 12a1 1 0 0 0 .962-.726l2-7A1 1 0 0 0 17 3H3.77L3.175.745A1 1 0 0 0 2.208 0H1a1 1 0 0 0 0 2h.438l.6 2.255v.019l2 7 .746 2.986A3 3 0 1 0 9 17a2.966 2.966 0 0 0-.184-1h2.368c-.118.32-.18.659-.184 1a3 3 0 1 0 3-3H6.78l-.5-2H15Z"/>
+                            </svg>
+                            Buy now
+                        </button>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+
     </div>
+
+
+</div>
+<!--Grid End-->
 </div>
 
+<script data-th-src="@{'/js/contact.js'}"></script>
+
 <script>
+
     console.log("this is profile page");
+
 </script>
+
+
 </body>
 </html>
-

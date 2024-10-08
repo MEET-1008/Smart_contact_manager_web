@@ -1,0 +1,307 @@
+    <!DOCTYPE html>
+    <html
+            lang="en"
+            th:replace="~{base :: parent(~{::#content},~{::title},~{::script})}"
+    >
+    <head>
+        <title data-th-text="${user.username}+' |  Profile'">
+            Profile Page
+        </title>
+        <link rel="stylesheet" data-th-href="@{'../css/style1.css'}" />
+    </head>
+
+    <body>
+    <div id="content" class="mp3">
+        <!-- sidebar -->
+
+        <!-- user is logged in : sidebar -->
+
+        <div th:if="${user}">
+            <div data-th-replace="~{user/sidebar :: sidebar}"></div>
+        </div>
+
+        <div class="sm:pl-64 pt-20" style="height: 1000px">
+            <section class=" ">
+                <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <div class="mb-72">
+                        <h2 class="font-manrope text-5xl dark:text-white text-center font-bold text-gray-900 mb-4">Choose
+                            your plan </h2>
+
+                    </div>
+                    <!--Grid-->
+                    <div class=" my-12 lg:grid lg:grid-cols-3 sm:gap-6 xl:gap-8 lg:space-y-0 lg:items-center">
+                        <!--Pricing Card-->
+                        <div class="flex flex-col mx-auto max-w-sm text-gray-900 rounded-2xl bg-gray-50 p-6 xl:py-9 xl:px-12 transition-all duration-500 hover:bg-gray-100">
+                            <h3 class="font-manrope text-2xl font-bold mb-3 uppercase">basic</h3>
+                            <div class="flex items-center mb-6">
+                                <span class="font-manrope mr-2 text-6xl font-semibold">₹100</span>
+                                <span class="text-xl text-gray-500 ">/ month</span>
+                            </div>
+                            <!--List-->
+                            <ul class="mb-12 space-y-6 text-left text-lg text-gray-500">
+                                <li class="flex items-center space-x-4">
+                                    <!-- Icon -->
+                                    <svg class="flex-shrink-0 w-6 h-6 text-indigo-600" viewBox="0 0 30 30" fill="none"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M10 14.7875L13.0959 17.8834C13.3399 18.1274 13.7353 18.1275 13.9794 17.8838L20.625 11.25M15 27.5C8.09644 27.5 2.5 21.9036 2.5 15C2.5 8.09644 8.09644 2.5 15 2.5C21.9036 2.5 27.5 8.09644 27.5 15C27.5 21.9036 21.9036 27.5 15 27.5Z"
+                                              stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+                                              stroke-linejoin="round"/>
+                                    </svg>
+                                    <span>10 contacts save only</span>
+                                </li>
+                                <li class="flex items-center space-x-4">
+                                    <!-- Icon -->
+                                    <svg class="flex-shrink-0 w-6 h-6 text-indigo-600" viewBox="0 0 30 30" fill="none"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M10 14.7875L13.0959 17.8834C13.3399 18.1274 13.7353 18.1275 13.9794 17.8838L20.625 11.25M15 27.5C8.09644 27.5 2.5 21.9036 2.5 15C2.5 8.09644 8.09644 2.5 15 2.5C21.9036 2.5 27.5 8.09644 27.5 15C27.5 21.9036 21.9036 27.5 15 27.5Z"
+                                              stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+                                              stroke-linejoin="round"/>
+                                    </svg>
+                                    <span>no payment refund</span>
+                                </li>
+                                <li class="flex items-center space-x-4">
+                                    <!-- Icon -->
+                                    <svg class="flex-shrink-0 w-6 h-6 text-indigo-600" viewBox="0 0 30 30" fill="none"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M10 14.7875L13.0959 17.8834C13.3399 18.1274 13.7353 18.1275 13.9794 17.8838L20.625 11.25M15 27.5C8.09644 27.5 2.5 21.9036 2.5 15C2.5 8.09644 8.09644 2.5 15 2.5C21.9036 2.5 27.5 8.09644 27.5 15C27.5 21.9036 21.9036 27.5 15 27.5Z"
+                                              stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+                                              stroke-linejoin="round"/>
+                                    </svg>
+                                    <span>24/7 Customer support </span>
+                                </li>
+                                <li class="flex items-center space-x-4">
+                                    <!-- Icon -->
+                                    <svg class="flex-shrink-0 w-6 h-6 text-indigo-600" viewBox="0 0 30 30" fill="none"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M10 14.7875L13.0959 17.8834C13.3399 18.1274 13.7353 18.1275 13.9794 17.8838L20.625 11.25M15 27.5C8.09644 27.5 2.5 21.9036 2.5 15C2.5 8.09644 8.09644 2.5 15 2.5C21.9036 2.5 27.5 8.09644 27.5 15C27.5 21.9036 21.9036 27.5 15 27.5Z"
+                                              stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+                                              stroke-linejoin="round"/>
+                                    </svg>
+                                    <span>All widget access</span>
+                                </li>
+                            </ul>
+                            <button class="open-btn py-2.5 px-5 bg-indigo-600 shadow-sm rounded-full transition-all duration-500 text-base text-white font-semibold text-center w-fit mx-auto hover:bg-indigo-700"
+                                    data-price="100">Purchase Plan ($100)
+                            </button>
+                            <!--List End-->
+                        </div>
+                        <!--Pricing Card-->
+                        <div class="flex flex-col mx-auto max-w-sm text-gray-900 rounded-2xl bg-indigo-50 transition-all duration-500 hover:bg-indigo-100 ">
+                            <div class="uppercase bg-indigo-700 rounded-t-2xl p-3 text-center text-white">
+                                MOST POPULAR
+                            </div>
+                            <div class="p-6 xl:py-9 xl:px-12">
+                                <h3 class="font-manrope text-2xl uppercase font-bold mb-3">premium</h3>
+                                <div class="flex items-center mb-6">
+                                    <span class=" font-manrope mr-2 text-6xl font-semibold text-indigo-600">₹300</span>
+                                    <span class="text-xl text-gray-500 ">/ month</span>
+                                </div>
+                                <!--List-->
+                                <ul class="mb-12 space-y-6 text-left text-lg ">
+                                    <li class="flex items-center space-x-4">
+                                        <!-- Icon -->
+                                        <svg class="flex-shrink-0 w-6 h-6 text-indigo-600" viewBox="0 0 30 30" fill="none"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M10 14.7875L13.0959 17.8834C13.3399 18.1274 13.7353 18.1275 13.9794 17.8838L20.625 11.25M15 27.5C8.09644 27.5 2.5 21.9036 2.5 15C2.5 8.09644 8.09644 2.5 15 2.5C21.9036 2.5 27.5 8.09644 27.5 15C27.5 21.9036 21.9036 27.5 15 27.5Z"
+                                                  stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+                                                  stroke-linejoin="round"/>
+                                        </svg>
+                                        <span>Unlimited contacts save</span>
+
+                                    </li>
+                                    <li class="flex items-center space-x-4">
+                                        <!-- Icon -->
+                                        <svg class="flex-shrink-0 w-6 h-6 text-indigo-600" viewBox="0 0 30 30" fill="none"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M10 14.7875L13.0959 17.8834C13.3399 18.1274 13.7353 18.1275 13.9794 17.8838L20.625 11.25M15 27.5C8.09644 27.5 2.5 21.9036 2.5 15C2.5 8.09644 8.09644 2.5 15 2.5C21.9036 2.5 27.5 8.09644 27.5 15C27.5 21.9036 21.9036 27.5 15 27.5Z"
+                                                  stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+                                                  stroke-linejoin="round"/>
+                                        </svg>
+                                        <span>AI Advisor</span>
+                                    </li>
+
+                                    <li class="flex items-center space-x-4">
+                                        <!-- Icon -->
+                                        <svg class="flex-shrink-0 w-6 h-6 text-indigo-600" viewBox="0 0 30 30" fill="none"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M10 14.7875L13.0959 17.8834C13.3399 18.1274 13.7353 18.1275 13.9794 17.8838L20.625 11.25M15 27.5C8.09644 27.5 2.5 21.9036 2.5 15C2.5 8.09644 8.09644 2.5 15 2.5C21.9036 2.5 27.5 8.09644 27.5 15C27.5 21.9036 21.9036 27.5 15 27.5Z"
+                                                  stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+                                                  stroke-linejoin="round"/>
+                                        </svg>
+                                        <span>Priority customer support</span>
+                                    </li>
+                                    <li class="flex items-center space-x-4">
+                                        <!-- Icon -->
+                                        <svg class="flex-shrink-0 w-6 h-6 text-indigo-600" viewBox="0 0 30 30" fill="none"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M10 14.7875L13.0959 17.8834C13.3399 18.1274 13.7353 18.1275 13.9794 17.8838L20.625 11.25M15 27.5C8.09644 27.5 2.5 21.9036 2.5 15C2.5 8.09644 8.09644 2.5 15 2.5C21.9036 2.5 27.5 8.09644 27.5 15C27.5 21.9036 21.9036 27.5 15 27.5Z"
+                                                  stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+                                                  stroke-linejoin="round"/>
+                                        </svg>
+                                        <span>All Widget Access</span>
+                                    </li>
+                                </ul>
+                                <button class=" open-btn py-2.5 px-5 bg-indigo-600 shadow-sm rounded-full transition-all duration-500 text-base text-white font-semibold text-center w-fit block mx-auto hover:bg-indigo-700"
+                                        data-price="300">Purchase Plan ($300)
+                                </button>
+                                <!--List End-->
+                            </div>
+                        </div>
+                        <!--Pricing Card-->
+                        <div class="flex flex-col mx-auto max-w-sm text-gray-900 rounded-2xl bg-gray-50 p-6 xl:py-9 xl:px-12 transition-all duration-500 hover:bg-gray-100">
+                            <h3 class="font-manrope text-2xl font-bold mb-3 uppercase">pro</h3>
+                            <div class="flex items-center mb-6">
+                                <span class="font-manrope mr-2 text-6xl font-semibold">₹200</span>
+                                <span class="text-xl text-gray-500 ">/ month</span>
+                            </div>
+                            <!--List-->
+                            <ul class="mb-12 space-y-6 text-left text-lg text-gray-500">
+                                <li class="flex items-center space-x-4">
+                                    <!-- Icon -->
+                                    <svg class="flex-shrink-0 w-6 h-6 text-indigo-600" viewBox="0 0 30 30" fill="none"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M10 14.7875L13.0959 17.8834C13.3399 18.1274 13.7353 18.1275 13.9794 17.8838L20.625 11.25M15 27.5C8.09644 27.5 2.5 21.9036 2.5 15C2.5 8.09644 8.09644 2.5 15 2.5C21.9036 2.5 27.5 8.09644 27.5 15C27.5 21.9036 21.9036 27.5 15 27.5Z"
+                                              stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+                                              stroke-linejoin="round"/>
+                                    </svg>
+                                    <span>100 contacts save only</span>
+                                </li>
+                                <li class="flex items-center space-x-4">
+                                    <!-- Icon -->
+                                    <svg class="flex-shrink-0 w-6 h-6 text-indigo-600" viewBox="0 0 30 30" fill="none"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M10 14.7875L13.0959 17.8834C13.3399 18.1274 13.7353 18.1275 13.9794 17.8838L20.625 11.25M15 27.5C8.09644 27.5 2.5 21.9036 2.5 15C2.5 8.09644 8.09644 2.5 15 2.5C21.9036 2.5 27.5 8.09644 27.5 15C27.5 21.9036 21.9036 27.5 15 27.5Z"
+                                              stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+                                              stroke-linejoin="round"/>
+                                    </svg>
+                                    <span>AI Advisor</span>
+                                </li>
+
+                                <li class="flex items-center space-x-4">
+                                    <!-- Icon -->
+                                    <svg class="flex-shrink-0 w-6 h-6 text-indigo-600" viewBox="0 0 30 30" fill="none"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M10 14.7875L13.0959 17.8834C13.3399 18.1274 13.7353 18.1275 13.9794 17.8838L20.625 11.25M15 27.5C8.09644 27.5 2.5 21.9036 2.5 15C2.5 8.09644 8.09644 2.5 15 2.5C21.9036 2.5 27.5 8.09644 27.5 15C27.5 21.9036 21.9036 27.5 15 27.5Z"
+                                              stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+                                              stroke-linejoin="round"/>
+                                    </svg>
+                                    <span>Priority customer support</span>
+                                </li>
+                                <li class="flex items-center space-x-4">
+                                    <!-- Icon -->
+                                    <svg class="flex-shrink-0 w-6 h-6 text-indigo-600" viewBox="0 0 30 30" fill="none"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M10 14.7875L13.0959 17.8834C13.3399 18.1274 13.7353 18.1275 13.9794 17.8838L20.625 11.25M15 27.5C8.09644 27.5 2.5 21.9036 2.5 15C2.5 8.09644 8.09644 2.5 15 2.5C21.9036 2.5 27.5 8.09644 27.5 15C27.5 21.9036 21.9036 27.5 15 27.5Z"
+                                              stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+                                              stroke-linejoin="round"/>
+                                    </svg>
+                                    <span>All Widget Access</span>
+                                </li>
+                            </ul>
+                            <button class=" open-btn py-2.5 px-5 bg-indigo-600 shadow-sm rounded-full transition-all duration-500 text-base text-white font-semibold text-center w-fit mx-auto hover:bg-indigo-700"
+                                    data-price="200">Purchase Plan ($200)
+                            </button>
+                            <!--List End-->
+                        </div>
+                    </div>
+                    <!--Grid End-->
+
+                </div>
+            </section>
+        </div>
+
+        <!-- Popup form container -->
+        <div id="popupForm" class="popup-form">
+            <div class="popup-content">
+                <span class="close">&times;</span>
+                <h3>Payment Form</h3>
+                <form id="paymentForm">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name">
+
+                    <label for="phone">Mobile Number:</label>
+                    <input type="text" id="phone" name="mobile">
+
+                    <label for="email">Email Address:</label>
+                    <input type="email" id="email" name="email" th:value="*{email}" disabled>
+
+                    <!-- New field to display the selected price -->
+                    <label for="amount">Amount:</label>
+                    <input type="text" id="amount" name="amount" value="0" disabled> <!-- Read-only field in red color -->
+
+                    <button id="paybtn">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script data-th-src="@{'/js/paymentform.js'}"></script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"></script>
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+        const priceInput = document.getElementById("amount"); // Price input field
+        console.log(priceInput);
+        async function fetchOrder() {
+            console.log("create order call happing");
+            const response = await fetch('http://localhost:8080/create-order', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: document.getElementById("name").value,
+                    phone: document.getElementById("phone").value,
+                    amount: document.getElementById("amount").value,
+                    email: document.getElementById("email").value,
+                    currency: 'INR'
+
+                })
+            });
+
+            const order = await response.json();
+            console.log("create call success")
+            console.log(order);
+            return order;
+        }
+
+        document.getElementById('paybtn').onclick = async function (e) {
+            const order = await fetchOrder();
+            console.log(order);
+
+            var options = {
+                "key": "rzp_test_60xk3NCYZgDsPp",
+                "amount": order.amount,
+                "currency": "INR",
+                "name": "SCM0.2",
+                "description": "Test Transaction",
+                "image": "https://res.cloudinary.com/doxjowamc/image/upload/v1725309303/ppx5zjltbw5ml7erf6ph.jpg",
+                "order_id": order.razorPayOrderId,
+                "receipt": order.receipt,
+                "callback_url": "http://localhost:8080/payment-callback",
+                "prefill": {
+                    "name": order.name,
+                    "email": order.email,
+                    "contact": order.phno
+                },
+                "theme": {
+                    "color": "#3399cc"
+                }
+            };
+            var rzp1 = new Razorpay(options);
+            rzp1.open();
+            e.preventDefault();
+        }
+    </script>
+
+
+    <script>
+        console.log("this is profile page");
+    </script>
+
+
+    </body>
+    </html>

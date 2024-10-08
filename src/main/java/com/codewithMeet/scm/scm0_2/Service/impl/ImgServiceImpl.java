@@ -26,6 +26,7 @@ public class ImgServiceImpl implements ImgService {
 
         String filename = UUID.randomUUID().toString();
         byte[] data = new byte[contactimg.getInputStream().available()];
+        contactimg.getInputStream().read(data);
         cloudinary.uploader().upload(data, ObjectUtils.asMap(
                 "public_id", filename
         ));
