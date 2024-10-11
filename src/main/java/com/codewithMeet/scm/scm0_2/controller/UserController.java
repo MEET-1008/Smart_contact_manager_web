@@ -75,7 +75,7 @@ public class UserController {
     }
 
 
-    @PostMapping("/changepassword")
+    @PostMapping("/changePassword")
     public String changePassword(
             @RequestParam("currentPassword") String currentPassword,
             @RequestParam("newPassword") String newPassword,
